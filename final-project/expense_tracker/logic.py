@@ -166,3 +166,24 @@ def filter_by_month(month, year=None):
         f"Kopā {total:.2f} EUR ({len(filtered)} ieraksti)\n"
     ])
 
+# Category totals 
+
+def sum_by_categories():
+    totals = {}
+
+    for e in load_expenses():
+        cat= e.get("category", "N/A")
+        amount = Decimal(str(e.get("amount", 0)))
+        totals[cat] = totals.get(cat, Decimal("0")) + amount
+    
+    lines = []
+    lines.append("\nKategoriju kopsavilkums")
+    lines.append("-" * 40)
+
+    for cat, total in totals.items():
+        lines.append(f"{cat:<20} {total:>8.2f} EUR")
+
+    lines.append("-" * 40)
+
+    return "\n".join(lines)
+    
