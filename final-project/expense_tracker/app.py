@@ -4,7 +4,7 @@
 # Import Python libraries
 
 # Imports local modules
-from logic import get_all_expenses, add_expenses, validate
+from logic import get_all_expenses, add_expenses, validate, filter_by_month
 
 
 def main_loop():

@@ -142,3 +142,27 @@ def validate(field_type):
             if value in PAYMENT_METHODS:
                 return value
             raise ValueError(f"Neatbilstošs maksājuma veids! Izvēlies no: {', '.join(PAYMENT_METHODS)}")
+        
+
+# Filtering
+
+def filter_by_month(month, year=None):
+    expenses = load_expenses()
+    filtered = [e for e in expenses if e["date"][5:7] == f"{month:02d}" and (year is None or int(e["date"][:4]) == year)]
+
+    total = sum(Decimal(str(e["amount"])) for e in filtered)
+
+    rows = [
+        f"{i}. | {e['date']:<10} | {e['category']:<16} | {e['docID']:<10} | {Decimal(str(e['amount'])):<8.2f} | {e['description']:<35} | {e['paymentMeth']:<10}"
+        for i, e in enumerate(filtered, 1)
+    ]
+
+    return "\n".join([
+        "\n" + "-"*120,
+        f"{'#':<3} | {'Datums':<10} | {'Kategorija':<16} | {'Dok.nr.':<10} | {'Summa':<8} | {'Apraksts':<35} | {'Maksājuma veids':<10}",
+        "-"*120,
+        *rows,
+        "-"*120,
+        f"Kopā {total:.2f} EUR ({len(filtered)} ieraksti)\n"
+    ])
+
