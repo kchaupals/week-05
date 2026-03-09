@@ -1,0 +1,47 @@
+[
+    {
+        "id": "1",
+        "date": "2025-02-15",
+        "amount": 12.50,
+        "docID": "EKA010",
+        "category": "Ēdiens",
+        "description": "Pusdienas kafejnīcā",
+        "paymentMeth": "Bankas karte"
+    },
+    {
+        "id": "2",
+        "date": "2025-02-15",
+        "amount": 14.50,
+        "docID": "EKA011",
+        "category": "Ēdiens",
+        "description": "Pusdienas kafejnīcā",
+        "paymentMeth": "Bankas karte"
+    },
+    {
+        "date": "2025-12-23",
+        "category": "Izklaide",
+        "amount": 150.00,
+        "docID": "VI2210",
+        "description": "Atrakciju parks",
+        "paymentMeth": "Pārskaitījums",
+        "id": 3
+    },
+    {
+        "date": "2026-02-20",
+        "category": "Transports",
+        "amount": 1750.25,
+        "docID": "EKA012",
+        "description": "Degviela auto",
+        "paymentMeth": "Bankas karte",
+        "id": 4
+    },
+    {
+        "date": "2025-12-24",
+        "category": "Izklaide",
+        "amount": 49.83,
+        "docID": "SC032412",
+        "description": "Baloni un rotājumi",
+        "paymentMeth": "Pārskaitījums",
+        "id": 5
+    }
+]
