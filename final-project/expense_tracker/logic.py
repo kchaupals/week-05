@@ -14,13 +14,15 @@ def sum_total():
     if not expenses:
         return None
     total = Decimal("0.00")
+    items = 0
     for sum in expenses:
         try:
             total += Decimal(sum.get("amount", "0"))
+            items += 1
         except (InvalidOperation, TypeError):
             raise ValueError("Nekorekta summa sarakstā")
     qtTotal = total.quantize(Decimal("0.01")) 
-    return qtTotal
+    return qtTotal, items
 
 
 
@@ -42,12 +44,13 @@ def add_expenses(expense):
 def get_all_expenses():
     '''Display all expenses in a table'''
     expenses = load_expenses()
+    total, count = sum_total()
     if not expenses:
         return ["Nav saglabātu izdevumu."]
     
     lines = []
     lines.append("\n" + "-" * 120)
-    lines.append(f"{'#':<3} | {'Datums':<10} | {'Kategorija':<8} | {'Dok.nr.':<10} | {'Summa':<8} | {'Apraksts':<35} | {'Maksājuma veids':<10}")
+    lines.append(f"{'#':<3} | {'Datums':<10} | {'Kategorija':<16} | {'Dok.nr.':<10} | {'Summa':<8} | {'Apraksts':<35} | {'Maksājuma veids':<10}")
     lines.append("-" * 120)
 
     for idx, item in enumerate(expenses, start=1):
@@ -59,11 +62,12 @@ def get_all_expenses():
         paymentMeth = item.get("paymentMeth", "N/A")
 
         try: 
-            lines.append(f"{idx}. | {date:<10} | {category:<8} | {docID:<10} | {amount:<8.2f} | {description:<35} | {paymentMeth:<10}")
+            lines.append(f"{idx}. | {date:<10} | {category:<16} | {docID:<10} | {amount:<8.2f} | {description:<35} | {paymentMeth:<10}")
         except (TypeError, ValueError) as e:
             lines.append(f"⚠ Kļūda rindā {idx}: {e}")
     
     lines.append("-" * 120 + "\n")
+    lines.append(f"Kopā {total:<3.2f} EUR ({count} ieraksti)\n")
     return lines
 
 # Validation 
