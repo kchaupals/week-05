@@ -4,7 +4,7 @@
 # Import Python libraries
 
 # Imports local modules
-from logic import get_all_expenses, add_expenses, validate, filter_by_month, sum_by_categories
+from logic import load_expenses, get_all_expenses, add_expenses, validate, filter_by_month, sum_by_categories, get_available_months, display_all_with_ids, delete_expense
 
 
 def main_loop():
@@ -13,6 +13,10 @@ def main_loop():
         # Menu
         print("\n1) Pievienot izdevumu")
         print("2) Parādīt izdevumus")
+        print("3) Filtrēt pēc mēneša")
+        print("4) Kopsavilkums pa kategorijām")
+        print("5) Dzēst izdevumu")
+        print("6) Ekspostēt CSV")
         print("7) Iziet")
 
         try:
@@ -43,9 +47,65 @@ def main_loop():
             lines = get_all_expenses()
             for line in lines:
                 print(line)
+        
+        elif choice == 3:
+            months = get_available_months()
+            if not months: 
+                print("Nav saglabātu izdevumu.")
+            else:
+                print("\nPieejamie mēneši")
+                for idx, (month, count) in enumerate(months, start=1):
+                    print(f"{idx}. {month} ({count} izdevumi)")
+            
+            while True:
+                try:
+                    month_choice = int(input("\nIzvēlies mēnesi (numurs): ").strip())
+                    selected_month = months[month_choice - 1][0]
+                    lines = filter_by_month(selected_month)
+                    print(lines)
+                    break
+
+                except (ValueError, IndexError):
+                    print("Nepareiza izvele")
+        elif choice == 4:
+            print(sum_by_categories())
+
+        elif choice == 5:
+            expenses = load_expenses()
+            if not expenses:
+                print("⚠ Nav izdevumu dzēšanai.")
+            else:
+                print(display_all_with_ids())
+
+                while True:
+                    try:
+                        idToDelete = int(input("Ievadi ID dzēšanai (vai 0 lai atceltu): ").strip())
+
+                        if idToDelete == 0:
+                            print("Atcelts.")
+                            break
+
+                        if not any(item.get("id") == idToDelete for item in expenses):
+                            print(f"⚠ ID {idToDelete} nav atrasts.")
+                            continue
+
+                        confirm = input(f"Vai tiešām vēlaties dzēst ID {idToDelete}? (jā/nē): ").lower()
+
+                        if confirm in ["jā", "ja"]:
+                            if delete_expense(idToDelete):
+                                print(f"✓ ID {idToDelete} veiksmīgi dzēsts")
+                            else:
+                                print("⚠ Kļūda saglabājot datus.")
+                            break
+                        else:
+                            print("Dzēšana atcelta.")
+                            break
+
+                    except ValueError:
+                        print("⚠ Lūdzu ievadi skaitli!")
 
         elif choice == 7:
-            print("Paldies, uz redzēšanos!")
+            print("\nPaldies, uz redzēšanos!")
             break
 
         else:
