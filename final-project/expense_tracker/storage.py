@@ -1,35 +1,25 @@
-# Utility to work with saving and loading data
-
+# Utility to work with saving and loading data from database - JSON
 # Standart libs
-import os
 import json
-import platform
-import csv
-import subprocess
-from datetime import datetime
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 from pathlib import Path
 
-# Local modules
-import logic
-
 # Setting up ENV
-
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent
 
-# External lists 
+# External directories
 EXPORT_DIR = BASE_DIR / "exports"
 LISTS_DIR = BASE_DIR / "lists"
 
-# Ensures directories mentioned above exists
+# Ensures directories mentioned above exists, if no - creates them automatically
 for directory in (EXPORT_DIR, LISTS_DIR):
     directory.mkdir(parents=True, exist_ok=True)
 
-# Main data storage between sessions
+# Main data storage file between sessions
 DEFAULT_STORAGE = BASE_DIR / "expenses.json"
 
-# Loading files from which lists are retrived
+# Loading data from an JSON file or automatically creating empty one if not found
 
 def load_expenses():
     '''Function to load expense list from JSON'''
@@ -51,8 +41,7 @@ def load_expenses():
     except OSError as e:
         raise OSError(f"File error with {DEFAULT_STORAGE}: {e}")
 
-
-
+# Saving data to an JSON file, also creating file if there is none
 def save_expenses(expenses):
     '''Save the given expenses list to JSON'''
     DEFAULT_STORAGE.parent.mkdir(parents=True, exist_ok=True)

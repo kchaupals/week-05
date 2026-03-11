@@ -5,7 +5,7 @@ from logic import load_expenses, get_all_expenses, add_expenses, validate, filte
 from export import export_list
 
 def main_loop():
-    """Interactive loop for managing expenses. Can later be replaced by GUI calls."""
+    '''Interactive loop for managing expenses. Can later be replaced by GUI calls.'''
     while True:
         # Menu
         print("\n1) Pievienot izdevumu")
@@ -13,7 +13,7 @@ def main_loop():
         print("3) Filtrēt pēc mēneša")
         print("4) Kopsavilkums pa kategorijām")
         print("5) Dzēst izdevumu")
-        print("6) Ekspostēt CSV")
+        print("6) Eksportēt CSV/TXT")
         print("7) Iziet")
 
         try:
@@ -23,6 +23,7 @@ def main_loop():
             continue
 
         if choice == 1:
+            '''Izvēle - Pievienot izdevumu'''
             try:
                 expense = {
                     "date": validate("date"),
@@ -41,11 +42,13 @@ def main_loop():
                 print(f"⚠ {e}")
 
         elif choice == 2:
+            '''Izvēle - Parādīt izdevumus'''
             lines = get_all_expenses()
             for line in lines:
                 print(line)
         
         elif choice == 3:
+            '''Izvēle - Filtrēt pēc mēnešiem'''
             months = get_available_months()
             if not months: 
                 print("Nav saglabātu izdevumu.")
@@ -65,9 +68,11 @@ def main_loop():
                 except (ValueError, IndexError):
                     print("Nepareiza izvele")
         elif choice == 4:
+            '''Izvēle - Kopsavilkums pa kategorijām'''
             print(sum_by_categories())
 
         elif choice == 5:
+            '''Izvēle - Dzēst izdevumu'''
             expenses = load_expenses()
             if not expenses:
                 print("⚠ Nav izdevumu dzēšanai.")
@@ -101,6 +106,7 @@ def main_loop():
                     except ValueError:
                         print("⚠ Lūdzu ievadi skaitli!")
         elif choice == 6:
+            '''Izvēle - Eksports CSV/TXT'''
             expenses = load_expenses()
             if not expenses:
                  print("⚠ Nav datu eksportēšanai.")
@@ -124,6 +130,7 @@ def main_loop():
                 print("⚠ Atbalstītie formāti: .csv vai .txt")
 
         elif choice == 7:
+            '''Izvēle - Iziet'''
             print("\nPaldies, uz redzēšanos!")
             break
 

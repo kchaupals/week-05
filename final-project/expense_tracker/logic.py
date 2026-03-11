@@ -1,5 +1,4 @@
 # Utility to handle bussiness logic and calculations
-
 # Import standart libs
 from decimal import Decimal, InvalidOperation
 from datetime import datetime
@@ -7,10 +6,21 @@ from datetime import datetime
 # Import local modules
 from storage import load_expenses, save_expenses
 
-
+### 
+# Main functions - sum_total, add_expenses, validate and gen_post_id
+### 
 
 def sum_total(exp):
-    '''Function that calculates total value of items from passed expense list'''
+    '''
+    Function that calculates total value of items from passed expense list
+    
+    Args:
+        exp(dict): Dictionary from JSON file, that contains keys and value elements
+
+    Return:
+        qtTotal(Decimal): Total amount of expenses, calculated by each row of expense
+        items(int): List of items
+    '''
     if not exp:
         return None
     total = Decimal("0.00")
@@ -27,7 +37,13 @@ def sum_total(exp):
 
 
 def gen_post_id():
-    '''Function that checks and generates expense ID which is saved on data JSON'''
+    '''
+    Function that checks and generates expense ID which is saved on data JSON
+    
+    Return:
+        1(int): If there is no entries in expense list returns 1
+        max(existing_ids) + 1: If there is an entries, gets latest ones id and adds 1 to that and returns the value
+    '''
     expenses = load_expenses()
     if not expenses:
         return 1
@@ -43,7 +59,7 @@ def add_expenses(expense):
         expense: Passed list of entries that is appended to existing list
 
     Return: 
-        bool: True if data succesfully added
+        bool: True if data succesfully added, False otherwise
     '''
     expense["id"] = gen_post_id()
     expenses = load_expenses()
@@ -80,10 +96,17 @@ def get_all_expenses():
     lines.append(f"Kopā {total:<3.2f} EUR ({count} ieraksti)\n")
     return lines
 
-# Validation 
-
 def validate(field_type):
-    '''Validate input that is specified'''
+    '''
+    Function that acts as helper function for adding data to database, currently JSON
+    Main puprose is to handle passed field type and validate passed inputs, data to match set flags
+
+    Args:
+        field_type(str): Specify what kind of field type and validation flags needs to be used based on passed string, that also is validated
+
+    Return:
+        value(str/Decimal): Returns validated input to be passed for saving in database
+    '''
     CATEGORIES = [
         "Ēdiens",
         "Transports",
@@ -190,9 +213,10 @@ def filter_by_month(var):
         f"Kopā {total:.2f} EUR ({len(filtered)} ieraksti)\n"
     ])
 
-# Category totals 
+
 
 def sum_by_categories():
+    '''Calculates and returns a list of used categories that has expenses'''
     totals = {}
 
     for e in load_expenses():
@@ -212,8 +236,7 @@ def sum_by_categories():
     return "\n".join(lines)
     
 
-# Return months with expenses
-
+# Function for returning months with expenses
 def get_available_months():
     '''Return a list of available months from expenses'''
     expenses = load_expenses()
@@ -233,7 +256,7 @@ def get_available_months():
 # Delete an expense from list
 
 def display_all_with_ids():
-    """Display all expenses with their IDs."""
+    '''Display all expenses with their IDs.'''
     expenses = load_expenses()
     if not expenses:
         return "Nav izdevumu."
@@ -251,6 +274,7 @@ def display_all_with_ids():
     return "\n".join(lines)
 
 def delete_expense(expID):
+    '''Deletes expense that matches passed id'''
     expenses = load_expenses()
     new_expenses = [e for e in expenses if e.get("id") != expID]
     
