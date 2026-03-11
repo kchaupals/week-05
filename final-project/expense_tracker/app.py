@@ -1,11 +1,8 @@
 # Main entrypoint of app Expense tracker
 
-
-# Import Python libraries
-
 # Imports local modules
 from logic import load_expenses, get_all_expenses, add_expenses, validate, filter_by_month, sum_by_categories, get_available_months, display_all_with_ids, delete_expense
-
+from export import export_list
 
 def main_loop():
     """Interactive loop for managing expenses. Can later be replaced by GUI calls."""
@@ -103,6 +100,28 @@ def main_loop():
 
                     except ValueError:
                         print("⚠ Lūdzu ievadi skaitli!")
+        elif choice == 6:
+            expenses = load_expenses()
+            if not expenses:
+                 print("⚠ Nav datu eksportēšanai.")
+                 return
+            filename = input("Ievadi faila nosaukumu [Noklusējumā: izdevumi.csv]: ").strip()
+            file_type = input("Ievadi faila veidu CSV vai TXT: ").strip().lower()
+
+            if file_type not in ["csv", "txt"]:
+                print("Nekorekts faila formāta veids - ievadiet CSV vai TXT")
+
+            if not filename:
+                filename = "izdevumi"
+            
+            try:
+                if export_list(file_type=file_type, filename=filename):
+                    print(f"✓ Eksports veiksmīgs.")
+                else:
+                    print("⚠ Eksports neizdevās.")
+            
+            except ValueError:
+                print("⚠ Atbalstītie formāti: .csv vai .txt")
 
         elif choice == 7:
             print("\nPaldies, uz redzēšanos!")
