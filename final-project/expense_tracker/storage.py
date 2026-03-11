@@ -38,7 +38,13 @@ def load_expenses():
     
     try:
         with DEFAULT_STORAGE.open("r", encoding="utf-8") as f:
-            return json.load(f)
+            expenses = json.load(f)
+        
+        for item in expenses:
+            if "amount" in item:
+                item["amount"] = Decimal(item["amount"])
+                
+        return expenses
     except json.JSONDecodeError as e:
         raise ValueError(f"JSON decode error in {DEFAULT_STORAGE}: {e}")
     
@@ -52,7 +58,7 @@ def save_expenses(expenses):
     DEFAULT_STORAGE.parent.mkdir(parents=True, exist_ok=True)
 
     with DEFAULT_STORAGE.open("w", encoding="utf-8") as f:
-        json.dump(expenses, f, indent=4, ensure_ascii=False)
+        json.dump(expenses, f, indent=4, ensure_ascii=False, default=str)
 
 
 
