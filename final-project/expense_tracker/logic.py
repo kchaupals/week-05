@@ -227,10 +227,14 @@ def sum_by_categories():
     lines = []
     lines.append("\nKategoriju kopsavilkums")
     lines.append("-" * 40)
+    catTotals = 0
 
     for cat, total in totals.items():
         lines.append(f"{cat:<20} {total:>8.2f} EUR")
+        catTotals += total
 
+    lines.append("-" * 40)
+    lines.append("Kopā:" + " " * 18 + f"{catTotals:.2f} EUR")
     lines.append("-" * 40)
 
     return "\n".join(lines)
