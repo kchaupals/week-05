@@ -51,4 +51,10 @@ def save_expenses(expenses):
 
 
 
-
+if __name__ == "__main__":
+    print("Utility to work with saving and loading data from database - JSON")
+    print("\nFunctions:")
+    print('''
+    # load_expenses() - Loading data from an JSON file or automatically creating empty one if not found
+    # save_expenses() - Saving data to an JSON file, also creating file if there is none
+    ''')

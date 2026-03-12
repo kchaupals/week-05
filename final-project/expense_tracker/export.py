@@ -1,3 +1,4 @@
+# Exporting function handler utility
 # Includes default libraries
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
@@ -69,6 +70,7 @@ def export_list(file_type="csv", filename=None):
         return False
     
 def auto_open(file_path):
+    '''Function to auto-open file once it's been exported'''
     try:
         system = platform.system()
         if system == "Windows":
@@ -79,3 +81,12 @@ def auto_open(file_path):
             subprocess.run(["xdg-open", file_path])
     except Exception:
         raise Exception("⚠ Nevar automātiski atvērt failu")
+    
+
+if __name__ == "__main__":
+    print("Exporting function handler utility")
+    print("\nFunctions:")
+    print('''
+    # Exporting list in CSV or TXT
+    # Auto-opening the exported file Win/macOS/Linux
+    ''')

@@ -287,3 +287,14 @@ def delete_expense(expID):
     
     save_expenses(new_expenses)
     return True
+
+
+if __name__ == "__main__":
+    print("Utility to handle bussiness logic and calculations")
+    print("\nFunctions:")
+    print('''
+    # Main functions - sum_total, add_expenses, validate and gen_post_id
+    # Filtering function - filter_by_month
+    # Summary for categories - sum_by_categories
+    # Deleting an expense from list - delete_expense
+    ''')
