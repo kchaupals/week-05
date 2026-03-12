@@ -4,17 +4,32 @@
 from logic import load_expenses, get_all_expenses, add_expenses, validate, filter_by_month, sum_by_categories, get_available_months, display_all_with_ids, delete_expense
 from export import export_list
 
+def header():
+    '''Āpplication header'''
+    print('''
+.######..##..##..#####...######..##..##...####...######..........######..#####....####....####...##..##..######..#####..
+.##.......####...##..##..##......###.##..##......##................##....##..##..##..##..##..##..##.##...##......##..##.
+.####......##....#####...####....##.###...####...####..............##....#####...######..##......####....####....#####..
+.##.......####...##......##......##..##......##..##................##....##..##..##..##..##..##..##.##...##......##..##.
+.######..##..##..##......######..##..##...####...######............##....##..##..##..##...####...##..##..######..##..##.
+........................................................................................................................
+          ''')
 def main_loop():
     '''Interactive loop for managing expenses. Can later be replaced by GUI calls.'''
+    header()
     while True:
         # Menu
-        print("\n1) Pievienot izdevumu")
+        print("\n" + "="*50)
+        print("IZDEVUMU PĀRVALDNIEKS")
+        print("="*50)
+        print("1) Pievienot izdevumu")
         print("2) Parādīt izdevumus")
         print("3) Filtrēt pēc mēneša")
         print("4) Kopsavilkums pa kategorijām")
         print("5) Dzēst izdevumu")
         print("6) Eksportēt CSV/TXT")
         print("7) Iziet")
+        print("="*50)
 
         try:
             choice = int(input("Izvēlies: "))

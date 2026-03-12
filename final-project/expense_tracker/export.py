@@ -33,8 +33,8 @@ def export_list(file_type="csv", filename=None):
     if file_type == "csv":
         with open(full_path, "w", newline="", encoding="utf-8-sig") as f:
             writer = csv.writer(f)
-            writer.writerow(["ID","Datums", "Kategorija", "Maksājuma apliecinājums", "Summa", "Apraksts", "Maksājuma veids"])
-            for item in expenses:
+            writer.writerow(["","ID","Datums", "Kategorija", "Maksājuma apliecinājums", "Summa", "Apraksts", "Maksājuma veids"])
+            for idx, item in enumerate(expenses, 1):
                 id = item["id"]
                 date = item["date"]
                 category = item["category"]
@@ -42,8 +42,9 @@ def export_list(file_type="csv", filename=None):
                 description = item["description"]
                 amount = Decimal(item["amount"])
                 paymentMeth = item["paymentMeth"]
-                writer.writerow([id, date, category, docID,f"{amount:.2f}", description, paymentMeth])
-            writer.writerow([f"Kopēja summa:{total:.2f} EUR",f"({count} izdevumi)"])
+                writer.writerow([idx, id, date, category, docID,f"{amount:.2f}", description, paymentMeth])
+            writer.writerow([f"Kopēja summa:",f"{total:.2f} EUR",f"({count} izdevumi)"])
+        auto_open(full_path)
         return True
     # ------------ TXT ------------
     elif file_type == "txt":
@@ -51,7 +52,7 @@ def export_list(file_type="csv", filename=None):
             f.write(f"Izdevumu saraksts: {base_name}\n")
             f.write(f"Eksportēts: {timestamp}\n")
             f.write("-"* 50 + "\n")
-            for idx, item in enumerate(expenses, start=1):
+            for idx, item in enumerate(expenses,1):
                 id = item["id"]
                 date = item["date"]
                 category = item["category"]
@@ -62,6 +63,19 @@ def export_list(file_type="csv", filename=None):
                 f.write(f"{idx}. ID:{id}| Datums: {date:<7} | Kategorija: {category:>3} | Maksājuma apliecinājums: {docID:>4} | Apraksts: {description:>3} | Summa: {amount:.2f} | Maksājuma veids {paymentMeth} \n")
             f.write("-"* 50 + "\n")
             f.write(f"Kopēja summa {total:.2f} EUR ({count} izdevumi)")
+        auto_open(full_path)
         return True
     else:
         return False
+    
+def auto_open(file_path):
+    try:
+        system = platform.system()
+        if system == "Windows":
+            os.startfile(file_path)
+        elif system == "Darwin": # macOS
+            subprocess.run(["open", file_path])
+        else: # Linux
+            subprocess.run(["xdg-open", file_path])
+    except Exception:
+        raise Exception("⚠ Nevar automātiski atvērt failu")
